@@ -2,40 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class JWTAuthController extends Controller
+class AuthController extends Controller
 {
-    // User registration
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-
-        $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        return response()->json(compact('user','token'), 201);
-    }
-
-    // User login
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -47,7 +19,6 @@ class JWTAuthController extends Controller
 
             $user = auth()->user();
 
-            // (optional) Attach the role to the token.
             $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
 
             return response()->json(compact('token'));
@@ -56,7 +27,6 @@ class JWTAuthController extends Controller
         }
     }
 
-    // Get authenticated user
     public function getUser()
     {
         try {
@@ -70,7 +40,6 @@ class JWTAuthController extends Controller
         return response()->json(compact('user'));
     }
 
-    // User logout
     public function logout()
     {
         JWTAuth::invalidate(JWTAuth::getToken());
