@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MedicController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,5 @@ Route::get('/info', function () {
         'env' => config('app.env'),
     ]);
 });
+
+Route::get('/medicos', [MedicController::class, 'index']);
