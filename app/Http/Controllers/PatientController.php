@@ -10,28 +10,52 @@ use Illuminate\Http\JsonResponse;
 class PatientController extends Controller
 {
     /**
-     * Display the specified resource.
-     */
-    public function index()
-    {
-        try {
-            $patients = Patient::all();
-
-            return response()->json([
-                $patients,
-            ], 200);
-        } catch (\Exception $e) {
-            \Log::error('Erro ao listar paciente:', ['error' => $e->getMessage()]);
-
-            return response()->json([
-                'message' => 'Erro ao listar o paciente.',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/pacientes",
+     *     summary="Cadastrar um novo paciente",
+     *     description="Cadastra um novo paciente no sistema.",
+     *     tags={"Pacientes"},
+     *     security={{"bearerAuth":{}}},
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *             required={"nome", "cpf", "celular"},
+     *
+     *             @OA\Property(property="nome", type="string", example="Maria Souza"),
+     *             @OA\Property(property="cpf", type="string", example="123.456.789-00"),
+     *             @OA\Property(property="celular", type="string", example="+55 11 98765-4321")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=201,
+     *         description="Paciente cadastrado com sucesso",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="nome", type="string", example="Maria Souza"),
+     *             @OA\Property(property="cpf", type="string", example="849.570.310-61"),
+     *             @OA\Property(property="celular", type="string", example="+55 11 98765-4321"),
+     *             @OA\Property(property="created_at", type="string", format="date-time", example="2024-02-01T12:00:00Z"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2024-02-01T12:00:00Z"),
+     *             @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro ao cadastrar o paciente",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Erro ao cadastrar o paciente."),
+     *             @OA\Property(property="error", type="string", example="Mensagem detalhada do erro")
+     *         )
+     *     )
+     * )
      */
     public function store(StorePatientRequest $request): JsonResponse
     {
@@ -63,7 +87,80 @@ class PatientController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/pacientes/{id}",
+     *     summary="Atualizar informações de um paciente",
+     *     description="Atualiza os dados de um paciente existente.",
+     *     tags={"Pacientes"},
+     *     security={{"bearerAuth":{}}},
+     *
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID do paciente",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="nome", type="string", example="Maria Souza"),
+     *             @OA\Property(property="celular", type="string", example="+55 11 98765-4321")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Paciente atualizado com sucesso",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="nome", type="string", example="Maria Souza"),
+     *             @OA\Property(property="cpf", type="string", example="123.456.789-00"),
+     *             @OA\Property(property="celular", type="string", example="+55 11 98765-4321"),
+     *             @OA\Property(property="created_at", type="string", format="date-time", example="2024-02-01T12:00:00Z"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2024-02-01T12:00:00Z"),
+     *             @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, example=null)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Nenhuma informação foi fornecida para atualização",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Nenhuma informação foi fornecida para atualização.")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="Paciente não encontrado",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Paciente não encontrado."),
+     *             @OA\Property(property="error", type="string", example="Mensagem detalhada do erro")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro ao atualizar o paciente",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="Erro ao atualizar o paciente."),
+     *             @OA\Property(property="error", type="string", example="Mensagem detalhada do erro")
+     *         )
+     *     )
+     * )
      */
     public function update(UpdatePatientRequest $request, $id_paciente)
     {

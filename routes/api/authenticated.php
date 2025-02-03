@@ -25,9 +25,8 @@ Route::middleware([Middleware::class])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::post('/medicos', [MedicController::class, 'store']);
-    Route::put('/medicos/{{id_medico}}/pacientes', [MedicController::class, 'show']);
     Route::post('/medicos/consulta', [AppointmentsController::class, 'store']);
-    Route::get('/medicos/{id_medico}/pacientes', [MedicController::class, 'show']);
+    Route::get('/medicos/{id_medico}/pacientes', [MedicController::class, 'listMedicPatient']);
 
     Route::get('/pacientes', [PatientController::class, 'store']);
     Route::post('/pacientes', [PatientController::class, 'store']);
