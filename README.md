@@ -55,16 +55,18 @@ A API estará disponível em **http://localhost/api**.
 
 ### 2️⃣ **Médicos**
 - `GET /medicos` → Listar médicos (público)
-- `GET /cidades/{id_cidade}/medicos` → Listar médicos de uma cidade (público)
+- `POST /medicos` → Listar médicos (autenticado)
+- `GET /cidades/{id_cidade}/medicos` → Listar médicos de uma cidade (autenticado)
 - `POST /medicos/consulta` → Agendar consulta (autenticado)
 
 ### 3️⃣ **Pacientes**
 - `GET /medicos/{id_medico}/pacientes` → Listar pacientes do médico (autenticado)
 - `POST /pacientes` → Cadastrar paciente (autenticado)
-- `POST /pacientes/{id_paciente}` → Atualizar paciente (autenticado)
+- `PUT /pacientes/{id_paciente}` → Atualizar paciente (autenticado)
 
 ### 4️⃣ **Autenticação**
 - `POST /auth/login` → Autenticação via JWT
+- `GET /user` → Lsita informações do Usuario
 - `POST /auth/logout` → Logout do usuário
 
 ## Tecnologias Utilizadas
