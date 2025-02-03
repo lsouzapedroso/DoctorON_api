@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class City extends Model
+class Medic extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'cities';
+    protected $table = 'medics';
 
     protected $fillable = [
         'name',
-        'state',
+        'specialization',
+        'city_id',
     ];
 
     protected $hidden = [
@@ -23,8 +24,8 @@ class City extends Model
         'deleted_at',
     ];
 
-    public function medics()
+    public function city()
     {
-        return $this->hasMany(Medic::class, 'city_id');
+        return $this->belongsTo(City::class, 'city_id');
     }
 }

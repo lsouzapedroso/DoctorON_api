@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\medic;
+use App\Http\Requests\StoreMedicRequest;
+use App\Models\Medic;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MedicController extends Controller
@@ -12,21 +14,38 @@ class MedicController extends Controller
      */
     public function index()
     {
+        $medics = Medic::all();
 
+        return $medics;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMedicRequest $request): JsonResponse
     {
-        //
+        $data = [
+            'name' => $request->get('nome'),
+            'specialization' => $request->get('especialidade'),
+            'city_id' => $request->get('cidade_id'),
+        ];
+        $medic = Medic::create($data);
+
+        return response()->json([
+            'id' => $medic->id,
+            'nome' => $medic->name,
+            'especialidade' => $medic->specialization,
+            'cidade_id' => $medic->city_id,
+            'created_at' => $medic->created_at,
+            'updated_at' => $medic->updated_at,
+            'deleted_at' => $medic->deleted_at,
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(medic $medic)
+    public function show(Medic $medic)
     {
         //
     }
@@ -34,7 +53,7 @@ class MedicController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, medic $medic)
+    public function update(Request $request, Medic $medic)
     {
         //
     }
@@ -42,7 +61,7 @@ class MedicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(medic $medic)
+    public function destroy(Medic $medic)
     {
         //
     }

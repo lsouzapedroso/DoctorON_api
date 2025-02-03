@@ -21,9 +21,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware([Middleware::class])->group(function () {
     Route::get('user', [AuthController::class, 'getUser']);
     Route::post('logout', [AuthController::class, 'logout']);
-});
 
-Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::post('/medicos', [MedicController::class, 'store']);
     Route::put('/medicos/{id}', [MedicController::class, 'update']);
 
