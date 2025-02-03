@@ -28,4 +28,21 @@ class Medic extends Model
     {
         return $this->belongsTo(City::class, 'city_id');
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'medic_id');
+    }
+
+    public function patients()
+    {
+        return $this->hasManyThrough(
+            Patient::class,
+            Appointment::class,
+            'medic_id',
+            'id',
+            'id',
+            'patient_id'
+        );
+    }
 }
