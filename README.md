@@ -1,66 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API para Gerenciamento de Consultas Médicas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é uma API desenvolvida em Laravel para gerenciar cidades, médicos, pacientes e consultas médicas. 
 
-## About Laravel
+## Requisitos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **PHP** 8.2 ou superior
+- **Laravel** 8 ou superior
+- **Laravel Sail** para ambiente de desenvolvimento com Docker
+- **MySQL** como banco de dados
+- **JWT Authentication** para autenticação de usuários
+- **Migrations, Factories e Seeders** para estruturação do banco de dados
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+##  Instalação
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1️⃣ Clonar o repositório
 
-## Learning Laravel
+```bash
+git clone https://github.com/lsouzapedroso/DoctorON_api.git
+cd DoctorON_api
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2️⃣ Configurar o Laravel Sail
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+cp .env.example .env
+composer install
+php artisan key:generate
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3️⃣ Subir os containers do Laravel Sail
 
-## Laravel Sponsors
+```bash
+./vendor/bin/sail up -d
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 4️⃣ Criar o banco de dados e popular com Seeders
 
-### Premium Partners
+```bash
+./vendor/bin/sail artisan migrate --seed
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 5️⃣ Gerar a chave JWT
 
-## Contributing
+```bash
+./vendor/bin/sail artisan jwt:secret
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+A API estará disponível em **http://localhost/api**.
 
-## Code of Conduct
+##  Endpoints
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 1️⃣ **Cidades**
+- `GET /cidades` → Listar cidades (público)
 
-## Security Vulnerabilities
+### 2️⃣ **Médicos**
+- `GET /medicos` → Listar médicos (público)
+- `GET /cidades/{id_cidade}/medicos` → Listar médicos de uma cidade (público)
+- `POST /medicos/consulta` → Agendar consulta (autenticado)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3️⃣ **Pacientes**
+- `GET /medicos/{id_medico}/pacientes` → Listar pacientes do médico (autenticado)
+- `POST /pacientes` → Cadastrar paciente (autenticado)
+- `POST /pacientes/{id_paciente}` → Atualizar paciente (autenticado)
 
-## License
+### 4️⃣ **Autenticação**
+- `POST /auth/login` → Autenticação via JWT
+- `POST /auth/logout` → Logout do usuário
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Tecnologias Utilizadas
+- **Laravel**
+- **Laravel Sail (Docker)**
+- **MySQL**
+- **JWT Authentication**
+- **Postman (para testes dos endpoints)**
+
+## Testando com Postman
+
+A API pode ser testada usando a collection do Postman disponível em:
+
+🔗 [Collection do Postman](https://web.postman.co/workspace/5ffbecf9-b61c-4d43-8a88-47a6a4aec7e0/collection/26108265-65071102-f584-4be1-9981-9eb4623caff9)
+
+## Contribuição
+
+Sinta-se à vontade para contribuir enviando PRs ou abrindo issues no repositório.
+
