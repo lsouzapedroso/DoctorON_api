@@ -23,8 +23,12 @@ class Patient extends Model
         'updated_at',
         'deleted_at',
     ];
-    //    public function appointment()
-    //    {
-    //        return $this->belongsTo(Appointment::class, 'appointment_id');
-    //    }
+
+    /**
+     * Relationship: A patient has many appointments.
+     */
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'patient_id');
+    }
 }

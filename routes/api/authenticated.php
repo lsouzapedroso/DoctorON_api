@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MedicController;
 use App\Http\Controllers\PatientController;
@@ -25,6 +26,8 @@ Route::middleware([Middleware::class])->group(function () {
 
     Route::post('/medicos', [MedicController::class, 'store']);
     Route::put('/medicos/{{id_medico}}/pacientes', [MedicController::class, 'show']);
+    Route::post('/medicos/consulta', [AppointmentsController::class, 'store']);
+    Route::get('/medicos/{id_medico}/pacientes', [MedicController::class, 'show']);
 
     Route::get('/pacientes', [PatientController::class, 'store']);
     Route::post('/pacientes', [PatientController::class, 'store']);

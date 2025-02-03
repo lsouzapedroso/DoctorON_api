@@ -5,41 +5,45 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Route;
 
-class ShowMadicPatientRequest extends FormRequest
+class ShowMedicPatientRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
+    /**
+     * Prepare validation before rules are applied.
+     */
     protected function prepareForValidation()
     {
         $this->merge([
-            '$id_medico' => Route::current()->parameter('$id_medico'),
+            'id_medico' => Route::current()->parameter('id_medico'),
         ]);
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            '$id_medico' => 'required|integer|exists:medic,id',
+            'id_medico' => 'required|integer|exists:medics,id',
         ];
     }
 
+    /**
+     * Custom error messages.
+     */
     public function messages(): array
     {
         return [
-            '$id_medico.required' => 'O campo medico é obrigatorio',
-            '$id_medico.integer' => 'O Id do medico deve ser um numero inteiro',
-            '$id_medico.exit' => 'O medico informado não exite',
+            'id_medico.required' => 'O campo médico é obrigatório.',
+            'id_medico.integer' => 'O ID do médico deve ser um número inteiro.',
+            'id_medico.exists' => 'O médico informado não existe.',
         ];
     }
 }
