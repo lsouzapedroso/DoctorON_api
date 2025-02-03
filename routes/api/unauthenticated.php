@@ -28,6 +28,6 @@ Route::get('/info', function () {
 });
 
 Route::get('/cidades', [CityController::class, 'index']);
-Route::get('/cidades/{id_cidade}/medicos', [CityController::class, 'show']);
+Route::get('/cidades/{id_cidade}/medicos', [CityController::class, 'getMedicosByCidade']);
 
 Route::get('/medicos', [MedicController::class, 'index']);
