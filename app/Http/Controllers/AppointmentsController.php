@@ -82,7 +82,7 @@ class AppointmentsController extends Controller
             $appointment = Appointment::create([
                 'medic_id' => $request->medico_id,
                 'patient_id' => $request->paciente_id,
-                'date' => date('Y-m-d H:i:s', strtotime($request->data)), // Garante o formato correto
+                'date' => date('Y-m-d H:i:s', strtotime($request->data)),
             ]);
 
             return response()->json([
