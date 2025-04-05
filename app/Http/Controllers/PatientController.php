@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
 use App\Models\Patient;
-use http\Env\Request;
 use Illuminate\Http\JsonResponse;
 
 class PatientController extends Controller
@@ -79,6 +78,7 @@ class PatientController extends Controller
             ], 201);
         } catch (\Exception $e) {
             \Log::error('Erro ao cadastrar paciente:', ['error' => $e->getMessage()]);
+
             return response()->json([
                 'message' => 'Erro ao cadastrar o paciente.',
                 'error' => $e->getMessage(),
